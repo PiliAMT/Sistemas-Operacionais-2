@@ -1,0 +1,46 @@
+# === Executáveis =====================================================
+mysh
+test_zombie
+
+# === Arquivos objeto (gerados pelo compilador) ========================
+*.o
+
+# === Arquivos de debug e análise =====================================
+# gerados pelo valgrind (valgrind --log-file=...)
+vgcore.*
+valgrind-*.log
+
+# gerados pelo gdb
+.gdb_history
+
+# core dumps (gerados quando o programa crasha)
+core
+core.*
+
+# === Arquivos temporários de teste ===================================
+test_*.c
+test_*
+
+# === Editores e IDEs =================================================
+# VS Code
+.vscode/
+
+# CLion / JetBrains
+.idea/
+cmake-build-*/
+
+# Vim/Neovim
+*.swp
+*.swo
+*~
+
+# Emacs
+\#*\#
+.\#*
+
+# === Sistema operacional ==============================================
+# Linux
+.directory
+
+# macOS (caso algum integrante use)
+.DS_Store
