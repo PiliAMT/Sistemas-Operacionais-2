@@ -17,10 +17,6 @@ valgrind-*.log
 core
 core.*
 
-# === Arquivos temporários de teste ===================================
-test_*.c
-test_*
-
 # === Editores e IDEs =================================================
 # VS Code
 .vscode/
