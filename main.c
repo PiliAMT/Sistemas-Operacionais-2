@@ -71,6 +71,15 @@ int main(void) {
         if (strcmp(args[0], "exit") == 0)
             break;
 
+        /* cd: deve rodar no pai com chdir(), nunca via fork */
+        if (strcmp(args[0], "cd") == 0) {
+            if (args[1] == NULL)
+                fprintf(stderr, "mysh: cd: argumento ausente\n");
+            else if (chdir(args[1]) == -1)
+                fprintf(stderr, "mysh: cd: %s\n", strerror(errno));
+            continue;
+        }
+
         /*
          * Delega a execução ao módulo do Integrante 2 (executor.c).
          * execute_command realiza fork() + execvp() + waitpid() internamente.
