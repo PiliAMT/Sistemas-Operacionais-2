@@ -1,5 +1,13 @@
 /* test_zombie.c - arquivo temporário de teste, jogar fora depois */
 #include "mysh.h"
+#include <time.h>
+
+static void print_time(void)
+{
+    time_t now = time(NULL);
+    struct tm *t = localtime(&now);
+    printf("[%02d:%02d:%02d] ", t->tm_hour, t->tm_min, t->tm_sec);
+}
 
 int main(void) {
     /* ===== TESTE 1: handler registrado corretamente ===== */
@@ -47,15 +55,18 @@ int main(void) {
     }
 
     /* --- processo pai --- */
-    printf("pai: filho criado (pid %d). vou dormir 10 segundos...\n", pid);
+    print_time(); printf("pai: filho criado (pid %d). vou dormir 10 segundos...\n", pid);
 
     /*
      * Dorme 10 segundos SEM chamar wait().
      * Sem o handler, o filho ficaria zumbi durante esse tempo.
      * COM o handler, o SIGCHLD chega e o waitpid dentro do handler
      * colhe o filho - sem o pai precisar fazer nada explicitamente.
+     * loop garante sleep completo mesmo se interrompido por SIGCHLD.
      */
-    sleep(10);
+    unsigned int restante = 10;
+    while (restante > 0)
+        restante = sleep(restante);
 
     printf("pai: acordei. verificando se há zumbis...\n");
     return 0;
