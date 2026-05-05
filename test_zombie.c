@@ -38,7 +38,7 @@ int main(void) {
     waitpid(pid, NULL, 0);
 
     /* ===== TESTE 3: zumbi ===== */
-    pid_t pid = fork();   /* cria um filho */
+    pid = fork();   /* cria um filho */
 
     if (pid == 0) {
         /* --- processo filho --- */
