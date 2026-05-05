@@ -83,7 +83,7 @@ int main(void) {
 
     /* loop infinito — encerrado apenas pelo comando "exit" */
     while (1) {
-
+        memset(input, 0, sizeof(input));
         show_prompt();   /* exibe o prompt (stub por enquanto) */
 
         /* lê a linha do usuário; fgets retorna NULL em EOF (Ctrl+D) */
