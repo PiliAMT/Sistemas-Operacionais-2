@@ -31,6 +31,8 @@ int main(void) {
      */
     setup_signals();
 
+    printf("MySh iniciado. Digite 'exit' ou Ctrl+D para sair.\n");
+
     /* loop infinito — encerrado pelo comando "exit" ou EOF (Ctrl+D) */
     while (1) {
 
@@ -88,5 +90,6 @@ int main(void) {
         execute_command(args);
     }
 
+    printf("Encerrando MySh...\n");
     return 0;
 }
