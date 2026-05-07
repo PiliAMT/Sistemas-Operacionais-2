@@ -40,6 +40,9 @@ void show_prompt(void) {
 
     /* obtém o nome do usuário; getlogin pode retornar NULL em alguns ambientes */
     username = getlogin();
+    /* tenta username = getenv("USER") como segundo fallback antes de render para "user" */
+    if (username == NULL)
+        username = getenv("USER");
     if (username == NULL)
         username = "user";   /* fallback seguro */
 
