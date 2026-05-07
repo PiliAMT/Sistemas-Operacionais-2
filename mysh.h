@@ -16,12 +16,12 @@
  * Incluídas aqui uma única vez para todo o projeto.
  * --------------------------------------------- */
 #include <stddef.h>     /* size_t, NULL                                 */
- #include <stdio.h>      /* printf, fprintf, fgets, perror              */
-#include <stdlib.h>     /* exit, malloc, free                          */
-#include <string.h>     /* strtok, strerror, memset, strlen            */
-#include <unistd.h>     /* fork, execvp, getcwd, gethostname, getlogin */
-#include <sys/wait.h>   /* wait, waitpid, WIFEXITED, WEXITSTATUS       */
-#include <sys/types.h>  /* pid_t                                       */
+#include <stdio.h>      /* printf, fprintf, fgets, perror               */
+#include <stdlib.h>     /* exit, malloc, free                           */
+#include <string.h>     /* strtok, strerror, memset, strlen             */
+#include <unistd.h>     /* fork, execvp, getcwd, gethostname, getlogin  */
+#include <sys/wait.h>   /* wait, waitpid, WIFEXITED, WEXITSTATUS        */
+#include <sys/types.h>  /* pid_t                                        */
 #include <errno.h>      /* errno - código numérico do último erro       */
 #include <signal.h>     /* sigaction, SIGCHLD, SA_RESTART, SA_NOCLDWAIT */
 
@@ -35,7 +35,7 @@
 #define MAX_CWD      256   /* tam máximo do caminho do diretório atual */
 
 /* ===========================================================
- * MÓDULO: parser  (Integrante 1 - parser.c)
+ * MÓDULO: parser  (Integrante 1 - parser.c)  <- PEDRO
  * =========================================================== */
 
 /*

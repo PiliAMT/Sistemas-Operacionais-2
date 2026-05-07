@@ -50,7 +50,7 @@ void show_prompt(void) {
     if (gethostname(hostname, sizeof(hostname)) != 0)
         strncpy(hostname, "localhost", sizeof(hostname) - 1);
 
-    /* garante terminação — gethostname pode não adicionar '\0' se truncar */
+    /* garante terminação - gethostname pode não adicionar '\0' se truncar */
     hostname[sizeof(hostname) - 1] = '\0';
 
     /* obtém o diretório atual; getcwd retorna NULL em caso de erro */
@@ -91,7 +91,7 @@ void show_prompt(void) {
  *   retorno: 3
  *
  * Delimitadores:
- *   Espaço, tab e newline — múltiplos espaços consecutivos são tratados
+ *   Espaço, tab e newline - múltiplos espaços consecutivos são tratados
  *   corretamente pelo strtok (ele os ignora automaticamente).
  *
  * Limite:

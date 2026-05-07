@@ -24,7 +24,7 @@ int main(void) {
     char *args[MAX_ARGS];     /* array de ponteiros para os tokens         */
 
     /*
-     * PONTO DE INTEGRAÇÃO — INTEGRANTE 3
+     * PONTO DE INTEGRAÇÃO - INTEGRANTE 3
      * setup_signals() DEVE ser a primeira chamada do main.
      * Registra o handler de SIGCHLD antes de qualquer fork(),
      * garantindo que nenhum processo filho vire zumbi desde o início.
@@ -33,7 +33,7 @@ int main(void) {
 
     printf("MySh iniciado. Digite 'exit' ou Ctrl+D para sair.\n");
 
-    /* loop infinito — encerrado pelo comando "exit" ou EOF (Ctrl+D) */
+    /* loop infinito - encerrado pelo comando "exit" ou EOF (Ctrl+D) */
     while (1) {
 
         /* zera o buffer antes de cada leitura para evitar lixo de memória */
@@ -68,7 +68,7 @@ int main(void) {
         /*
          * Comando interno: exit
          * Encerra o loop principal imediatamente.
-         * Não cria processo filho — é tratado aqui mesmo.
+         * Não cria processo filho - é tratado aqui mesmo.
          */
         if (strcmp(args[0], "exit") == 0)
             break;
