@@ -41,10 +41,6 @@ int execute_command(char *args[], const char *outfile) {
         exit(EXIT_FAILURE);
     }
 
-    /*
-     * ECHILD means sigchld_handler already reaped this child with WNOHANG;
-     * treat it as successful completion.
-     */
     if (waitpid(pid, &status, 0) == -1) {
         if (errno != ECHILD)
             perror("mysh: waitpid");
