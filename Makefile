@@ -14,7 +14,9 @@
 # ---------------------------------------------------------------------
 
 # Nome do executável final
-TARGET = mysh
+TARGET      = mysh
+TEST_TARGET = test_requirements
+TEST_OBJS   = parser.o executor.o signals.o
 
 # Compilador e flags
 CC = gcc
@@ -53,13 +55,20 @@ $(TARGET): $(OBJS)
 %.o: %.c mysh.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
+# --- Testes ----------------------------------------------------------
+test: $(TARGET) $(TEST_TARGET)
+	./$(TEST_TARGET)
+
+$(TEST_TARGET): test_requirements.c $(TEST_OBJS)
+	$(CC) $(CFLAGS) -o $(TEST_TARGET) test_requirements.c $(TEST_OBJS)
+
 # --- Limpeza ---------------------------------------------------------
 clean:
-	rm -f $(OBJS) $(TARGET)
+	rm -f $(OBJS) $(TARGET) $(TEST_TARGET)
 	@echo "Arquivos temporários removidos."
 
 # --- Rebuild completo ------------------------------------------------
 rebuild: clean $(TARGET)
 
 # Declara alvos que não correspondem a arquivos reais
-.PHONY: clean rebuild
+.PHONY: clean rebuild test
