@@ -83,11 +83,20 @@ int main(void) {
         }
 
         /*
+         * Detecta redirecionamento de saída (">") antes de executar.
+         * find_redirect() remove ">" e o nome do arquivo de args[] e devolve
+         * o caminho em outfile. Se retornar -1 há erro de sintaxe: pula a exec.
+         */
+        char *outfile;
+        if (find_redirect(args, &outfile) == -1)
+            continue;
+
+        /*
          * Delega a execução ao módulo do Integrante 2 (executor.c).
          * execute_command realiza fork() + execvp() + waitpid() internamente.
          * O valor de retorno é o código de saída do processo filho (-1 em erro).
          */
-        execute_command(args);
+        execute_command(args, outfile);
     }
 
     printf("Encerrando MySh...\n");

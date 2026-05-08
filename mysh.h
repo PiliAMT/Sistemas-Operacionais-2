@@ -24,6 +24,7 @@
 #include <sys/types.h>  /* pid_t                                        */
 #include <errno.h>      /* errno - código numérico do último erro       */
 #include <signal.h>     /* sigaction, SIGCHLD, SA_RESTART, SA_NOCLDWAIT */
+#include <fcntl.h>      /* open, O_WRONLY, O_CREAT, O_TRUNC              */
 
 /* ---------------------------------------------
  * CONSTANTES DE CONFIG
@@ -57,6 +58,30 @@
 int parse_input(char *input, char *args[]);
 
 /*
+ * find_redirect - detecta e remove o operador ">" e o arquivo destino de args[].
+ *
+ * Parâmetros:
+ *   args    : array de ponteiros terminado em NULL (saída de parse_input).
+ *   outfile : ponteiro que receberá o nome do arquivo destino, ou NULL se ausente.
+ *
+ * Efeito colateral:
+ *   Se ">" for encontrado, o elemento e o nome do arquivo são removidos do array
+ *   (o ">" é substituído por NULL, truncando-o ali).
+ *
+ * Retorno:
+ *    1  : redirecionamento encontrado; *outfile aponta para o nome do arquivo.
+ *    0  : nenhum ">" na linha; *outfile == NULL.
+ *   -1  : ">" encontrado mas sem arquivo destino; mensagem de erro já impressa.
+ *
+ * Exemplo:
+ *   args antes  ->  { "ls", "-l", ">", "saida.txt", NULL }
+ *   args depois ->  { "ls", "-l", NULL }
+ *   *outfile    ->  "saida.txt"
+ *   retorno     ->  1
+ */
+int find_redirect(char *args[], char **outfile);
+
+/*
  * show_prompt - exibe o prompt estilo "user@host:/caminho$ ".
  *
  * Usa getcwd e gethostname internamente.
@@ -72,16 +97,24 @@ void show_prompt(void);
  * execute_command - cria um processo filho e executa o comando.
  *
  * Parâmetros:
- *   args : array de strings terminado em NULL (saída de parse_input).
+ *   args    : array de strings terminado em NULL (saída de parse_input).
+ *   outfile : caminho do arquivo para onde redirecionar stdout, ou NULL
+ *             para manter a saída padrão no terminal.
  *
- * Fluxo interno:
- *   fork() -> filho chama execvp(args[0], args)
- *          -> pai chama waitpid() para esperar o filho terminar.
+ * Fluxo interno (filho):
+ *   Se outfile != NULL:
+ *     open()  -> abre/cria o arquivo (O_WRONLY | O_CREAT | O_TRUNC, 0644)
+ *     dup2()  -> substitui STDOUT_FILENO pelo descritor do arquivo
+ *     close() -> fecha o fd original (já duplicado, não é mais necessário)
+ *   execvp(args[0], args)  -> substitui a imagem do processo
+ *
+ * Fluxo interno (pai):
+ *   waitpid() -> aguarda o filho terminar
  *
  * Retorno:
- *   Código de saída do processo filho, ou -1 em caso de erro no fork.
+ *   Código de saída do processo filho, ou -1 em caso de erro no fork/open/dup2.
  */
-int execute_command(char *args[]);
+int execute_command(char *args[], const char *outfile);
 
 /* ===========================================================
  * MÓDULO: signals  (Integrante 3 - signals.c)  <- JULIA

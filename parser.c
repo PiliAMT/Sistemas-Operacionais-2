@@ -118,3 +118,40 @@ int parse_input(char *input, char *args[]) {
 
     return count;
 }
+
+/* ======================================================================
+ * find_redirect - detecta e remove "> arquivo" do array de argumentos
+ * ======================================================================
+ *
+ * Percorre args[] procurando o token ">". Quando encontrado:
+ *   1. Salva o próximo token (nome do arquivo) em *outfile.
+ *   2. Coloca NULL na posição do ">", truncando o array ali — o execvp
+ *      nunca verá o operador nem o nome do arquivo.
+ *
+ * Por que truncar em vez de compactar?
+ *   Porque args[] vem de strtok, cujos tokens são ponteiros para dentro
+ *   do buffer original. Truncar é O(1) e não invalida nenhum ponteiro.
+ *   Não há tokens úteis após "> arquivo" numa linha simples.
+ *
+ * Retorno:
+ *    1  : redirecionamento encontrado e válido.
+ *    0  : nenhum ">" na linha (caso normal, sem redirecionamento).
+ *   -1  : ">" sem arquivo destino (erro de sintaxe do usuário).
+ */
+int find_redirect(char *args[], char **outfile) {
+    *outfile = NULL;
+
+    for (int i = 0; args[i] != NULL; i++) {
+        if (strcmp(args[i], ">") == 0) {
+            if (args[i + 1] == NULL) {
+                fprintf(stderr, "mysh: sintaxe: arquivo destino ausente após '>'\n");
+                return -1;
+            }
+            *outfile  = args[i + 1];
+            args[i]   = NULL;   /* trunca o array: execvp não verá ">" nem o arquivo */
+            return 1;
+        }
+    }
+
+    return 0;
+}
